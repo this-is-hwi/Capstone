@@ -1,1 +1,22 @@
+```java
+class OSRM {
+    public static int getDistance(String origin, String destination) throws IOException {
+        String urlStr = "http://router.project-osrm.org/route/v1/driving/" + origin + ";" + destination + "?overview=false";
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        JSONObject json = new JSONObject(response.toString());
+        return json.getJSONArray("routes").getJSONObject(0).getInt("distance"); // 거리 (m)
+    }
+}
+```
+//1차적 osrm클래스생성
 
